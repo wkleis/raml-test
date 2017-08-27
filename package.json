@@ -9,11 +9,14 @@
   "dependencies": {
     "chai": "^4.1.1",
     "chai-as-promised": "^7.1.1",
+    "chai-http": "^3.0.0",
     "express": "^4.15.4",
     "jsonschema": "^1.2.0",
     "mocha": "^3.5.0",
     "osprey": "^0.4.1",
     "ramldt2jsonschema": "0.0.1",
     "request": "^2.81.0"
-  }
+  },
+  "scripts": { "test": "mocha test/integration" }
+
 }
