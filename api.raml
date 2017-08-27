@@ -1,0 +1,168 @@
+#%RAML 1.0
+title: Book AP
+version: v1
+baseUri: http://localhost/bookapi/
+types:
+  uuidType:
+    type: string
+    maxLength: 36
+    minLength: 36
+
+  titleType:
+        type: string
+        maxLength: 256
+        minLength: 1
+
+  nameType:
+      type: string
+      maxLength: 256
+      minLength: 1
+
+  yearType:
+    type: string
+    pattern: ^\d{4}$
+
+
+  authorDataType:
+    type: object
+    properties:
+      name: nameType
+      born: date-only
+    example: {
+        name: "Herman Hesse",
+        born : 1877-07-02
+    }
+
+  authorType:
+    type: authorDataType
+    properties:
+      authorId: uuidType
+    example: {
+        authorId: "938146d4-8b24-11e7-bb31-be2e44b06b34",
+        name: "Herman Hesse",
+        born : 1877-07-02
+      }
+
+  authorsRepsonseType:
+    type: array
+    items: authorType
+    example: [{
+        authorId: "938146d4-8b24-11e7-bb31-be2e44b06b34",
+        name: "Herman Hesse",
+        born : 1877-07-02
+      },{
+        authorId: "2ee25476-8b28-11e7-bb31-be2e44b06b34",
+        name: "John Irving",
+        born : 1942-03-02
+      }]
+
+
+  bookData:
+    type: object
+    properties:
+      title: titleType
+      publishedYear?: yearType
+      authorId: uuidType
+      bookType:
+        enum: [ hardcover, paperback, ebook]
+    example: {
+      title: "Steppenwolf",
+      publishedYear : "1974",
+      authorId: "938146d4-8b24-11e7-bb31-be2e44b06b34",
+      bookType: "paperback"
+    }
+
+  bookType:
+    type: bookData
+    properties:
+      bookId: uuidType
+    example: {
+      bookId: "683880b4-8b24-11e7-bb31-be2e44b06b34",
+      title: "Steppenwolf",
+      publishedYear : "1974",
+      authorId: "938146d4-8b24-11e7-bb31-be2e44b06b34",
+      bookType: "paperback"
+    }
+
+  bookShortType:
+    type: object
+    properties:
+      bookId: uuidType
+      title: titleType
+      authorId: uuidType
+    example: {
+        bookId: "683880b4-8b24-11e7-bb31-be2e44b06b34",
+        title: "Steppenwolf",
+        authorId: "938146d4-8b24-11e7-bb31-be2e44b06b34",
+      }
+
+  booksResponseType:
+    type: array
+    items: bookShortType
+    example: [{
+        bookId: "683880b4-8b24-11e7-bb31-be2e44b06b34",
+        title: "Steppenwolf",
+        authorId: "938146d4-8b24-11e7-bb31-be2e44b06b34"
+      },{
+        bookId: "33f53000-8b28-11e7-bb31-be2e44b06b34",
+        title: "The Cider House Rules",
+        authorId: "2ee25476-8b28-11e7-bb31-be2e44b06b34"
+      }]
+      
+/authors:
+  get:
+    description: get a list of all authors
+    responses:
+      200:
+        body:
+          application/json:
+            type: authorsRepsonseType
+
+
+  post:
+    description: create a new author
+    body:
+      application/json:
+        type: authorType
+  /{authorId}:
+    get:
+      description: get a specific author
+      responses:
+        200:
+          body:
+            application/json:
+              type: authorType
+    put:
+      description: update the specified author
+      body:
+        application/json:
+          type: authorDataType
+/books:
+  get:
+    description: get a list of all books
+    responses:
+      200:
+        body:
+          application/json:
+            type: booksResponseType
+
+  post:
+    description: create a new book
+    body:
+      application/json:
+        type: bookType
+
+  /{bookId}:
+    description: get a specific book
+    get:
+      description: a specific book
+      responses:
+          200:
+            body:
+              application/json:
+                type: bookType
+    put:
+      description: Update the specified book
+      body:
+        application/json:
+          type: bookData

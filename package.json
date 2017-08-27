@@ -1,0 +1,19 @@
+{
+  "name": "books",
+  "version": "1.0.0",
+  "description": "Raml/Osprey test",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "chai": "^4.1.1",
+    "chai-as-promised": "^7.1.1",
+    "express": "^4.15.4",
+    "jsonschema": "^1.2.0",
+    "mocha": "^3.5.0",
+    "osprey": "^0.4.1",
+    "ramldt2jsonschema": "0.0.1",
+    "request": "^2.81.0"
+  }
+}
